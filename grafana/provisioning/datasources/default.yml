@@ -1,0 +1,15 @@
+apiVersion: 1
+
+datasources:
+  - name: PostgreSQL-Firewall
+    type: postgres
+    access: proxy
+    url: db:5432
+    user: firewall
+    password: firewall_password
+    database: firewall_logs
+    isDefault: true
+    jsonData:
+      sslmode: 'disable'
+      timescaledb: false
+    editable: true

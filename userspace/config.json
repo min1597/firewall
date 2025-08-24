@@ -1,0 +1,12 @@
+{
+  "machine_name": "edge-server-01",
+  "local_cidrs": [
+    "192.168.1.0/24",
+    "10.0.0.0/8"
+  ],
+  "db_host": "db",
+  "db_port": 5432,
+  "db_user": "firewall",
+  "db_password": "firewall_password",
+  "db_name": "firewall_logs"
+}

@@ -1,0 +1,42 @@
+{
+  "geoip_block": {
+    "countries": ["CN", "RU"],
+    "asns": []
+  },
+  "rules": [
+    {
+      "name": "Rate Limit DNS Queries",
+      "action": "rate_limit",
+      "dst_ip": "0.0.0.0/0",
+      "protocol": "udp",
+      "dst_port": 53,
+      "rate_limit": {
+        "rate": 100, 
+        "burst": 200 
+      }
+    },
+    {
+      "name": "Protect Web Server (Stateful)",
+      "action": "allow",
+      "dst_ip": "0.0.0.0/0",
+      "protocol": "tcp",
+      "dst_port": 443,
+      "stateful": true
+    },
+    {
+      "name": "Protect SSH Server (Stateful)",
+      "action": "allow",
+      "dst_ip": "0.0.0.0/0",
+      "protocol": "tcp",
+      "dst_port": 22,
+      "stateful": true
+    },
+    {
+      "name": "Block Xmas Scan",
+      "action": "block",
+      "dst_ip": "0.0.0.0/0",
+      "protocol": "tcp",
+      "tcp_flags": ["FIN", "PSH", "URG"]
+    }
+  ]
+}

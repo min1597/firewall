@@ -1,0 +1,60 @@
+{
+  "__inputs": [],
+  "__requires": [],
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 1,
+  "panels": [
+    {
+      "datasource": "PostgreSQL-Firewall",
+      "title": "Allowed vs Dropped Traffic (PPS)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "targets": [
+        {
+          "rawSql": "SELECT time_bucket('1m', timestamp) as time, (case when action = 0 then 'Allowed' else 'Dropped' end) as metric, count(*)/60 as value FROM firewall_logs GROUP BY time, metric ORDER BY time",
+          "refId": "A",
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+        "datasource": "PostgreSQL-Firewall",
+        "title": "Top 10 Dropped Countries (Inbound)",
+        "type": "piechart",
+        "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+        "targets": [
+            {
+                "rawSql": "SELECT src_country as metric, count(*) as value FROM firewall_logs WHERE direction = 1 AND action = 1 AND src_country IS NOT NULL GROUP BY metric ORDER BY value DESC LIMIT 10",
+                "refId": "B"
+            }
+        ]
+    },
+    {
+        "datasource": "PostgreSQL-Firewall",
+        "title": "Top 5 Inbound Countries Traffic (PPS)",
+        "type": "timeseries",
+        "gridPos": { "h": 8, "w": 24, "x": 0, "y": 8 },
+        "targets": [
+            {
+                "rawSql": "SELECT time_bucket('1m', timestamp) AS time, src_country AS metric, COUNT(*)/60 AS value FROM firewall_logs WHERE direction = 1 AND src_country IN (SELECT src_country FROM firewall_logs WHERE direction = 1 AND src_country IS NOT NULL GROUP BY src_country ORDER BY count(*) DESC LIMIT 5) GROUP BY time, metric ORDER BY time",
+                "refId": "C"
+            }
+        ]
+    }
+  ],
+  "schemaVersion": 36,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "XDP Firewall Monitor",
+  "uid": "firewall-dashboard"
+}

@@ -1,0 +1,3 @@
+libbpf
+psycopg2-binary
+geoip2
