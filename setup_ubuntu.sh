@@ -8,11 +8,13 @@ echo "--- [1/5] Updating package lists ---"
 sudo apt-get update
 
 echo "--- [2/5] Installing system dependencies ---"
+# Note: python3-pip is included to make sure python3-venv is available.
 sudo apt-get install -y clang llvm libbpf-dev linux-headers-$(uname -r) \
                         python3 python3-pip git docker.io docker-compose
 
-echo "--- [3/5] Installing Python libraries ---"
-sudo pip3 install -r requirements.txt
+echo "--- [3/5] Installing Python libraries via apt ---"
+# This is the recommended way on modern Debian/Ubuntu systems (PEP 668)
+sudo apt-get install -y python3-libbpf python3-psycopg2 python3-geoip2
 
 echo "--- [4/5] Setting up Docker ---"
 sudo systemctl start docker
